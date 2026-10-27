@@ -93,3 +93,4 @@ Durante la implementación de `retirar` en `main.js`, ESLint mostró el error `'
      1. Enlace a una ejecución en verde de la pestaña Actions de tu repositorio.
      2. Captura de esa ejecución con sus pasos: guárdala en img/ y enlázala aquí.
      3. Captura de una ejecución en rojo provocada a propósito, y qué cambiaste para provocarla. -->
+![Boton rojo](img\rojo.PNG)

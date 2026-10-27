@@ -1,5 +1,11 @@
 // E12 · Cajero automático: simulación de una sesión
-import { validarImporte, esRetirable, calcularComision, desglosarBilletes, LIMITE_RETIRADA } from './cajero.js';
+import {
+  validarImporte,
+  esRetirable,
+  calcularComision,
+  desglosarBilletes,
+  LIMITE_RETIRADA,
+} from './cajero.js';
 
 const MAX_OPERACIONES = 10;
 
@@ -53,19 +59,21 @@ for (const op of operaciones) {
 
     case 'ingresar': {
       const importeValidado = validarImporte(op.importe);
-      
+
       if (importeValidado === null) {
         console.log(`${contador}. ${nombreOperacion} → ❌ Importe no válido: "${op.importe}"`);
       } else {
         saldo += importeValidado;
-        console.log(`${contador}. ${nombreOperacion} ${formatearImporte(importeValidado)} € → ✅ Saldo: ${saldo.toFixed(2)} €`);
+        console.log(
+          `${contador}. ${nombreOperacion} ${formatearImporte(importeValidado)} € → ✅ Saldo: ${saldo.toFixed(2)} €`,
+        );
       }
       break;
     }
 
     case 'retirar': {
       const importeValidado = validarImporte(op.importe);
-      
+
       if (importeValidado === null) {
         console.log(`${contador}. ${nombreOperacion} → ❌ Importe no válido: "${op.importe}"`);
         break;
@@ -74,19 +82,25 @@ for (const op of operaciones) {
       nombreOperacion = `retirar ${formatearImporte(importeValidado)} €`;
 
       if (!esRetirable(importeValidado)) {
-        console.log(`${contador}. ${nombreOperacion} → ❌ Debe ser múltiplo de 5 y no superar ${LIMITE_RETIRADA} €`);
+        console.log(
+          `${contador}. ${nombreOperacion} → ❌ Debe ser múltiplo de 5 y no superar ${LIMITE_RETIRADA} €`,
+        );
         break;
       }
 
       const comision = calcularComision(importeValidado, esCliente);
-      if (saldo < (importeValidado + comision)) {
-        console.log(`${contador}. ${nombreOperacion} → ❌ Saldo insuficiente (comisión: ${comision.toFixed(2)} €)`);
+      if (saldo < importeValidado + comision) {
+        console.log(
+          `${contador}. ${nombreOperacion} → ❌ Saldo insuficiente (comisión: ${comision.toFixed(2)} €)`,
+        );
         break;
       }
 
-      saldo -= (importeValidado + comision);
+      saldo -= importeValidado + comision;
       const desglose = desglosarBilletes(importeValidado);
-      console.log(`${contador}. ${nombreOperacion} → ✅ ${desglose} · comisión: ${comision.toFixed(2)} € · saldo: ${saldo.toFixed(2)} €`);
+      console.log(
+        `${contador}. ${nombreOperacion} → ✅ ${desglose} · comisión: ${comision.toFixed(2)} € · saldo: ${saldo.toFixed(2)} €`,
+      );
       break;
     }
 

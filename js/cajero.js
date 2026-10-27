@@ -22,16 +22,16 @@ export const COMISION_MINIMA = 1.5;
  *
  * @param {string} texto Importe tal como lo escribe el usuario.
  * @returns {number|null} El importe como número, o `null` si está vacío, no es un número o no es positivo.
- * @example
- * validarImporte(' 100,50 '); // 100.5
- * validarImporte('cien'); // null
  */
 export function validarImporte(texto) {
-  // TODO
-  if (typeof texto !== 'string' || texto.trim() === '') return null;
-  const numero = Number(texto.replace(',', '.'));
+  if (typeof texto !== 'string') return null;
+
+  const limpio = texto.trim().replace(',', '.');
+  if (limpio === '') return null;
+
+  const numero = Number(limpio);
   if (Number.isNaN(numero) || numero <= 0) return null;
-  
+
   return numero;
 }
 
@@ -40,14 +40,11 @@ export function validarImporte(texto) {
  *
  * @param {number} importe Importe que se quiere retirar, en euros.
  * @returns {boolean} `true` si es un entero múltiplo de 5 y no supera LIMITE_RETIRADA.
- * @example
- * esRetirable(60); // true
- * esRetirable(72); // false
  */
 export function esRetirable(importe) {
-  // TODO
- return importe > 0 && Number.isInteger(importe)
- && (importe % 5 === 0) && (importe <= LIMITE_RETIRADA);
+  return (
+    importe > 0 && Number.isInteger(importe) && importe % 5 === 0 && importe <= LIMITE_RETIRADA
+  );
 }
 
 /**
@@ -59,15 +56,13 @@ export function esRetirable(importe) {
  * @param {number} importe Importe retirado, en euros.
  * @param {boolean} esCliente Si la tarjeta es del propio banco.
  * @returns {number} Comisión en euros, redondeada a céntimos.
- * @example
- * calcularComision(60, false); // 1.5
- * calcularComision(300, false); // 6
  */
 export function calcularComision(importe, esCliente) {
-  // TODO
   if (esCliente) return 0;
+
   const comision = (importe * COMISION_NO_CLIENTE) / 100;
   const comisionFinal = Math.max(comision, COMISION_MINIMA);
+
   return Number(comisionFinal.toFixed(2));
 }
 
@@ -76,16 +71,13 @@ export function calcularComision(importe, esCliente) {
  *
  * @param {number} importe Importe retirable (ver esRetirable).
  * @returns {string} Desglose con el formato `2 x 50 € + 1 x 20 €`, o texto vacío si el importe es 0.
- * @example
- * desglosarBilletes(60); // '1 x 50 € + 1 x 10 €'
  */
 export function desglosarBilletes(importe) {
-  // TODO
-if (importe === 0) return '';
-  
+  if (importe === 0) return '';
+
   let restante = importe;
   const resultado = [];
-  
+
   for (const billete of BILLETES) {
     if (restante >= billete) {
       const cantidad = Math.floor(restante / billete);
@@ -93,4 +85,6 @@ if (importe === 0) return '';
       restante %= billete;
     }
   }
+
+  return resultado.join(' + ');
 }
